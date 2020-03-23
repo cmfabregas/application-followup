@@ -15,7 +15,13 @@ $people = array(
 	array('id'=>5, 'first_name'=>'Doug', 'last_name'=>'Simons', 'email'=>'doug.simons@hotmail.com')
 );
 
-$person = $_POST['person'];
+$person = $_POST['person']; //it's good practice to check if there's a value being posted before assigning it to a variable with the isset().
+
+//print_r($person);
+
+//initiates object to get title from the class Interview.
+$Interview = new Interview();
+$title = $Interview ->title;
 
 ?>
 
@@ -30,33 +36,28 @@ $person = $_POST['person'];
 </head>
 <body>
 
-	<h1><?=Interview::$title;?></h1>
+	<h1><?=$title;?></h1>
 
 	<?php
 	// Print 10 times
-	for ($i=10; $i<0; $i++) {
-		echo '<p>'+$lipsum+'</p>';
+	for ($i=0; $i<10; $i++) { //won't run because 10 !< 0
+		echo '<p>'.$lipsum.'</p>'; // fixed concatenation
 	}
 	?>
-
-
 	<hr>
 
-
-	<form method="get" action="<?=$_SERVER['REQUEST_URI'];?>">
+	<form method="post" action="<?=$_SERVER['REQUEST_URI'];?>"> <!-- using a get instead of a post when submitting person -->
 		<p><label for="firstName">First name</label> <input type="text" name="person[first_name]" id="firstName"></p>
 		<p><label for="lastName">Last name</label> <input type="text" name="person[last_name]" id="lastName"></p>
 		<p><label for="email">Email</label> <input type="text" name="person[email]" id="email"></p>
 		<p><input type="submit" value="Submit" /></p>
 	</form>
 
-	<?php if ($person): ?>
+	<?php if (isset($person)): // check if variable is set?>
 		<p><strong>Person</strong> <?=$person['first_name'];?>, <?=$person['last_name'];?>, <?=$person['email'];?></p>
 	<?php endif; ?>
 
-
 	<hr>
-
 
 	<table>
 		<thead>
@@ -67,11 +68,11 @@ $person = $_POST['person'];
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($people as $person): ?>
+			<?php foreach ($people as $person ): ?>
 				<tr>
-					<td><?=$person->first_name;?></td>
-					<td><?=$person->last_name;?></td>
-					<td><?=$person->email;?></td>
+					<td><?=$person['first_name']//$person->first_name; //accessing this as an object instead of an array value?></td>
+					<td><?=$person['last_name']//$person->last_name;?></td>
+					<td><?=$person['email']//$person->email;?></td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
